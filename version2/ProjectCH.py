@@ -3,10 +3,10 @@
 import json
 from pprint import pprint
 
-class ProjectCB():
+class ProjectCH():
 
     def __init__(self):
-        print("ProjectCB created")
+        print("ProjectCH created")
         self.entity_type = ""
         self.id = ""
         self.external_id = ""
@@ -73,7 +73,7 @@ class ProjectCB():
 '''
 
 if __name__ == '__main__':
-    test_project = ProjectCB()
+    test_project = ProjectCH()
     test_project.entity_type = "project"
     test_project.id = 238
     test_project.external_id = None

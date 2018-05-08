@@ -1,42 +1,87 @@
-from ProjectCB import ProjectCB
+from ProjectCH import ProjectCH
+from ProjectJira import ProjectJira
+from ProjectCH import ProjectCH
 import argparse
 import sys
 from pprint import pprint
 import json
-import ProjectCB
 
 class Orchestrator():
 
     def __init__(self):
-       self.all_projects = []
+       self.all_projects_ch = []
+       self.all_projects_jira = []
+       self.all_stories_ch = []
+       self.all_issues_jira = []
        self.project_cb_json = ""
+       self.project_jira_json = ""
+       self.stories_cb_json = ""
 
     def project_load_clubhouse_json(self, json_cb_file):
-        self.project_cb_json = json.load(open(self.projects_json_cb))
-         
+        self.project_cb_json = json.load(open(json_cb_file))
+        ##pprint(self.project_cb_json) 
 
     def load_projects(self):
-        jira_json = []
-        for project_json in self.project_cb_json():
-            project = ProjectCB()
-            project.entity_type = project['entity_type']
-            project.id = project['id']
-            project.external_id = project['external_id']
-            project.name =  project['name'] 
-            project.description =  project['description']
-            project.abbreviation =   project['abbreviation']
-            project.color =  project['color']
-            project.iteration_length =  project['iteration_length']
-            project.show_thermometer =  project['show_thermometer']
-            project.days_to_thermometer =  project['days_to_thermometer']
-            project.start_time =  project['start_time']
-            project.created_at =   project['created_at']
-            project.updated_at =  project['updated_at']
-            project.archived =  project['archived']
+        for project_json in self.project_cb_json:
+            project = ProjectCH()
+            project.entity_type = project_json['entity_type']
+            project.id = project_json['id']
+            project.external_id = project_json['external_id']
+            project.name =  project_json['name'] 
+            project.description =  project_json['description']
+            project.abbreviation =   project_json['abbreviation']
+            project.color =  project_json['color']
+            project.iteration_length =  project_json['iteration_length']
+            project.show_thermometer =  project_json['show_thermometer']
+            project.days_to_thermometer =  project_json['days_to_thermometer']
+            project.start_time =  project_json['start_time']
+            project.created_at =   project_json['created_at']
+            project.updated_at =  project_json['updated_at']
+            project.archived =  project_json['archived']
 #            project.follower_ids = []
-            project.team_id =  project['team_id']
+            project.team_id =  project_json['team_id']
 #            project.stats = []
-            self.all_projects.append(project)
+            self.all_projects_ch.append(project)
+        return self.all_projects_ch
+
+    def stories_load_clubhouse_json(self, json_cb_file):
+        self.stories_cb_json = json.load(open(json_cb_file))
+        ##pprint(self.project_cb_json) 
+
+    def load_stories(self):
+        for stories_json in self.stories_cb_json:
+            project = ProjectCH()
+            project.entity_type = project_json['entity_type']
+            project.id = project_json['id']
+            project.external_id = project_json['external_id']
+            project.name =  project_json['name'] 
+            project.description =  project_json['description']
+            project.abbreviation =   project_json['abbreviation']
+            project.color =  project_json['color']
+            project.iteration_length =  project_json['iteration_length']
+            project.show_thermometer =  project_json['show_thermometer']
+            project.days_to_thermometer =  project_json['days_to_thermometer']
+            project.start_time =  project_json['start_time']
+            project.created_at =   project_json['created_at']
+            project.updated_at =  project_json['updated_at']
+            project.archived =  project_json['archived']
+#            project.follower_ids = []
+            project.team_id =  project_json['team_id']
+#            project.stats = []
+            self.all_projects_ch.append(project)
+        return self.all_projects_ch
+
+    def create_jira_projects(self):
+        for project_ch in self.all_projects_ch:
+            project_jira = ProjectJira()
+            project_jira.name = project_ch.name 
+            project_jira.key =  str(project_ch.name)[:3].upper() + str(project_ch.id)
+            project_jira.type = "software"
+            project_jira.issues = []
+            self.all_projects_jira.append(project_jira)
+
+        return self.all_projects_jira
+         
 
 if __name__ == "__main__":
     print("Executing main")
@@ -51,11 +96,19 @@ if __name__ == "__main__":
     	sys.exit(1)
 
     if args.projectsfile != None:
-        mig_project = ProjectCB()
-        mig_project.load_clubhouse_json(args.projectsfile)
-        project_encoded = mig_project.convert_to_jira()
-        mig_project.json_to_file(args.outputfile)
-        pprint(project_encoded)
+        mig_project = Orchestrator()
+        mig_project.project_load_clubhouse_json(args.projectsfile)
+        project_list_ch = mig_project.load_projects()
+        project_list_jira = mig_project.create_jira_projects()
+        print(' { "projects": [  ')
+        for i in range(0,len(project_list_jira)):
+            if (i == len(project_list_jira) - 1):
+                print(project_list_jira[i].json_string())
+            else:
+                print(project_list_jira[i].json_string() + ",")
+                
+        print(' ] }  ')
+#        pprint(project_encoded)
 
 
 #test_project = ProjectCB()

@@ -3,7 +3,7 @@
 import json
 from pprint import pprint
 
-class StoryCB():
+class StoryCH():
 
     def __init__(self):
         print("Story created")
@@ -126,7 +126,7 @@ class StoryCB():
 '''
 
 if __name__ == '__main__':
-    test_project = StoryCB()
+    test_project = StoryCH()
     test_project.entity_type = "story"
     test_project.archived = False
     test_project.created_at = "2017-10-17T19:18:39Z"
