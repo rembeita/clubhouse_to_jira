@@ -1,6 +1,6 @@
 from ProjectCH import ProjectCH
 from ProjectJira import ProjectJira
-from ProjectCH import ProjectCH
+from StoryCH import StoryCH
 import argparse
 import sys
 from pprint import pprint
@@ -50,26 +50,26 @@ class Orchestrator():
 
     def load_stories(self):
         for stories_json in self.stories_cb_json:
-            project = ProjectCH()
-            project.entity_type = project_json['entity_type']
-            project.id = project_json['id']
-            project.external_id = project_json['external_id']
-            project.name =  project_json['name'] 
-            project.description =  project_json['description']
-            project.abbreviation =   project_json['abbreviation']
-            project.color =  project_json['color']
-            project.iteration_length =  project_json['iteration_length']
-            project.show_thermometer =  project_json['show_thermometer']
-            project.days_to_thermometer =  project_json['days_to_thermometer']
-            project.start_time =  project_json['start_time']
-            project.created_at =   project_json['created_at']
-            project.updated_at =  project_json['updated_at']
-            project.archived =  project_json['archived']
-#            project.follower_ids = []
-            project.team_id =  project_json['team_id']
-#            project.stats = []
-            self.all_projects_ch.append(project)
-        return self.all_projects_ch
+            story = StoryCH()
+            story.entity_type = project_json['entity_type']
+            story.id = project_json['id']
+            story.external_id = project_json['external_id']
+            story.name =  project_json['name'] 
+            story.description =  project_json['description']
+            story.abbreviation =   project_json['abbreviation']
+            story.color =  project_json['color']
+            story.iteration_length =  project_json['iteration_length']
+            story.show_thermometer =  project_json['show_thermometer']
+            story.days_to_thermometer =  project_json['days_to_thermometer']
+            story.start_time =  project_json['start_time']
+            story.created_at =   project_json['created_at']
+            story.updated_at =  project_json['updated_at']
+            story.archived =  project_json['archived']
+            story.follower_ids = []
+            story.team_id =  project_json['team_id']
+            story.stats = []
+            self.all_stories_ch.append(project)
+        return self.all_stories_ch
 
     def create_jira_projects(self):
         for project_ch in self.all_projects_ch:
@@ -88,7 +88,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--projects', help='Just import on Jira the projects of Clubhouse', action='store_true')
     parser.add_argument('--projectsfile', help='The Json Clubhouse file with the projects')
-    parser.add_argument('--outputfile', help='The Json Clubhouse file with the projects')
+    parser.add_argument('--projoutputfile', help='The Json Output file with the projects for Jira')
+    parser.add_argument('--stories', help='Import on Jira the Stories of Clubhouse', action='store_true')
+    parser.add_argument('--storiesfile', help='The Json Clubhouse file with the stories')
+    parser.add_argument('--storyoutputfile', help='The Json Output file with the issues for Jira')
     args = parser.parse_args()
 
     if args.projects == None:
