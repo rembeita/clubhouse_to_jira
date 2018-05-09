@@ -104,7 +104,7 @@ class Orchestrator():
     def create_jira_issues(self):
         for story_ch in self.all_stories_ch:
             issue_jira = IssueJira()
-            issue_jira.priority = ""
+            issue_jira.priority = "Major"
 	    issue_jira.description = ""
 	    issue_jira.status =  ""
 	    issue_jira.reporter = ""
