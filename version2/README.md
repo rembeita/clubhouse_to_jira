@@ -5,7 +5,7 @@ Migrate JSON data from Clubhouse to Jira
 ## Command to execute
 
 ´
-python Main.py --projects --projectsfile clubhouse_data/projects.json --outputfile jira_json/projects.json
+python Main.py --projects --projectsfile clubhouse_data/projects.json --outputfile jira_json/projects.json --stories --storiesfile clubhouse_data/stories.bugs.json
 ´
 
 
